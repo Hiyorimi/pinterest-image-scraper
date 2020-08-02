@@ -55,6 +55,8 @@ class Pinterest_Helper(object):
         else:
             self.browser = browser
         self.browser.get("https://www.pinterest.com")
+        logInElem = self.browser.find_elements_by_xpath("//*[contains(text(), 'Log in')]")
+        logInElem[0].click()
         emailElem = self.browser.find_element_by_name('id')
         emailElem.send_keys(login)
         passwordElem = self.browser.find_element_by_name('password')
@@ -109,8 +111,7 @@ class Pinterest_Helper(object):
                                 results.append(u_to_s(src))
                     previmages = copy.copy(images)
                     final_results = list(set(final_results + results))
-                    dummy = self.browser.find_element_by_tag_name('a')
-                    dummy.send_keys(Keys.PAGE_DOWN)
+                    self.browser.execute_script("window.scrollTo(0,document.body.scrollHeight)")
                     randdelay(1,2)
                     threshold -= 1
                 except (StaleElementReferenceException):
